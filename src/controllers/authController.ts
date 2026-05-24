@@ -40,4 +40,34 @@ const register = async (req: Request, res: Response) => {
      });
 };
 
-export { register };
+const login = async (req: Request, res: Response) => { 
+    const { email, password } = req.body;
+
+    // Check if user exists
+    const user = await prisma.user.findUnique({
+        where: { email: email }
+    });
+
+    if (!user) {
+        return res.status(401).json({ error: "Invalid email or password" });
+    }
+
+    // Check if password is correct
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+        return res.status(401).json({ error: "Invalid email or password" });
+    }
+
+    return res.status(200).json({ 
+        status: "success",
+        data: {
+            user: {
+                name: user.name,
+                email: user.email
+            }
+        }
+     });
+};
+
+export { register, login };
