@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import { prisma } from '../config/db.js'
 
 const addToWatchList = async (req: Request, res: Response) => {
-    const { userId, movieId, status, rating, notes } = req.body 
+    const { movieId, status, rating, notes } = req.body 
 
     // Check if movie exists
     const movie = await prisma.movie.findUnique({
@@ -13,9 +13,18 @@ const addToWatchList = async (req: Request, res: Response) => {
         return res.status(404).json({ error: "Movie not found" });
     }
 
+    if (req.user === undefined) {
+        return res.status(401).json({ error: "Not authorized" });
+    }
+
     // Check if movie is already in watchlist
     const existsInWatchlist = await prisma.watchlistItem.findUnique({
-        where: { userId_movieId: { userId, movieId } }
+        where: { 
+            userId_movieId: { 
+                userId: req.user.id, 
+                movieId: movieId 
+            } 
+        }
     })
 
     if (existsInWatchlist) {
@@ -24,7 +33,7 @@ const addToWatchList = async (req: Request, res: Response) => {
 
     const watchlistItem = await prisma.watchlistItem.create({
         data: {
-            userId,
+            userId: req.user.id,
             movieId,
             status: status || "TO_WATCH",
             rating,
@@ -38,4 +47,37 @@ const addToWatchList = async (req: Request, res: Response) => {
      });
 };
 
-export { addToWatchList };
+const removeFromWatchList = async (req: Request, res: Response) => {
+    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+
+    if (!id) {
+        return res.status(400).json({ error: "Invalid watchlist item ID" });
+    }
+
+    const watchlistItem = await prisma.watchlistItem.findUnique({
+        where: { id }
+    });
+
+    if (!watchlistItem) {
+        return res.status(404).json({ error: "Watchlist item not found" });
+    }
+
+    if (req.user === undefined) {
+        return res.status(401).json({ error: "Not authorized" });
+    }
+
+    if (watchlistItem.userId !== req.user.id) {
+        return res.status(403).json({ error: "Not authorized to delete this watchlist item" });
+    }
+
+    await prisma.watchlistItem.delete({
+        where: { id }
+    });
+
+    return res.status(200).json({ 
+        status: "success",
+        data: { watchlistItem }
+     });
+};
+
+export { addToWatchList, removeFromWatchList };
