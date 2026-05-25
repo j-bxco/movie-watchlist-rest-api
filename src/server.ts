@@ -3,6 +3,7 @@ import { Server } from 'http';
 import { connectDB, disconnectDB } from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import movieRoutes from './routes/movieRoutes.js';
+import watchlistRoutes from './routes/watchlistRoutes.js';
 
 connectDB();
 
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 // API Routes
 app.use('/auth', authRoutes);
 app.use('/movies', movieRoutes);
+app.use('/watchlist', watchlistRoutes);
 
 const PORT = 5001;
 
