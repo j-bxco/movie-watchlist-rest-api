@@ -71,11 +71,6 @@ const updateWatchListItem = async (req: Request, res: Response) => {
         return res.status(403).json({ error: "Not authorized to update this watchlist item" });
     }
 
-    const validStatuses = ["TO_WATCH", "WATCHING", "COMPLETED", "DROPPED"];
-    if (status && !validStatuses.includes(status)) {
-        return res.status(400).json({ error: "Invalid status value" });
-    }
-
     const updatedWatchlistItem = await prisma.watchlistItem.update({
         where: { id },
         data: {
