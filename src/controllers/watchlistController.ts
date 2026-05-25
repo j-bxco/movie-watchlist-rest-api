@@ -47,6 +47,50 @@ const addToWatchList = async (req: Request, res: Response) => {
      });
 };
 
+const updateWatchListItem = async (req: Request, res: Response) => {
+    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const { status, rating, notes } = req.body;
+
+    if (!id) {
+        return res.status(400).json({ error: "Invalid watchlist item ID" });
+    }
+
+    const watchlistItem = await prisma.watchlistItem.findUnique({
+        where: { id }
+    });
+
+    if (!watchlistItem) {
+        return res.status(404).json({ error: "Watchlist item not found" });
+    }
+
+    if (req.user === undefined) {
+        return res.status(401).json({ error: "Not authorized" });
+    }
+
+    if (watchlistItem.userId !== req.user.id) {
+        return res.status(403).json({ error: "Not authorized to update this watchlist item" });
+    }
+
+    const validStatuses = ["TO_WATCH", "WATCHING", "COMPLETED", "DROPPED"];
+    if (status && !validStatuses.includes(status)) {
+        return res.status(400).json({ error: "Invalid status value" });
+    }
+
+    const updatedWatchlistItem = await prisma.watchlistItem.update({
+        where: { id },
+        data: {
+            status,
+            rating,
+            notes
+        }
+    });
+
+    return res.status(200).json({
+        status: "success",
+        data: { updatedWatchlistItem }
+    });
+};
+
 const removeFromWatchList = async (req: Request, res: Response) => {
     const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
 
@@ -77,7 +121,7 @@ const removeFromWatchList = async (req: Request, res: Response) => {
     return res.status(200).json({ 
         status: "success",
         data: { watchlistItem }
-     });
+    });
 };
 
-export { addToWatchList, removeFromWatchList };
+export { addToWatchList, updateWatchListItem, removeFromWatchList };
