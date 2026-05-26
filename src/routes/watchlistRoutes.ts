@@ -2,7 +2,7 @@ import express from "express";
 import { addToWatchList, updateWatchListItem, removeFromWatchList } from "../controllers/watchlistController.js"
 import { authMiddleware } from "../middleware/authMiddleware.js";
 import { addToWatchlistSchema, updateWatchListItemSchema } from "../validators/watchlistValidators.js";
-import { validateRequest } from "../middleware/validateRequestMiddleware.js";
+import { validateRequest } from "../middleware/validateRequest.js";
 
 const router = express.Router();
 
