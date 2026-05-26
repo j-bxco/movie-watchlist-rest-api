@@ -8,10 +8,8 @@ const router = express.Router();
 
 router.use(authMiddleware);
 
-router.post("/", validateRequest(addToWatchlistSchema), addToWatchList);
-
-router.put("/:id", validateRequest(updateWatchListItemSchema), updateWatchListItem);
-
+router.post("/", validateRequest(addToWatchlistSchema, 'body'), addToWatchList);
+router.put("/:id", validateRequest(updateWatchListItemSchema, 'body'), updateWatchListItem);
 router.delete("/:id", removeFromWatchList);
 
 export default router;
