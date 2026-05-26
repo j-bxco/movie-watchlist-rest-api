@@ -23,3 +23,18 @@ This project is a learning-focused backend implementation of a Movie Watchlist A
 ## ❓ Why this project?
 
 It is designed to be a practical, end-to-end backend training exercise. Taking a standard JavaScript tutorial and adapting it to TypeScript served as an excellent way to accelerate my fullstack learning, troubleshoot real-world type errors, and establish stronger code quality habits early on.
+
+# 🚀 Getting Started
+Follow these steps to set up and run this project locally on your machine.
+## 📋 Prerequisites
+Before you begin, ensure you have the following installed:
+- Node.js (v18 or higher recommended)
+- PostgreSQL database running locally or hosted online (e.g., Supabase, Neon)
+- npm or yarn package manager
+
+## 🛠️ Installation & Setup
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Configure environment variables by createing a .env file in the root directory of your project. Refer to the .env-sample as guide.
+4. This project uses Prisma ORM. Run the following command to sync the database schema with your PostgreSQL database: `npx prisma migrate dev --name init`
+5. Start the development server: `npm run dev`
