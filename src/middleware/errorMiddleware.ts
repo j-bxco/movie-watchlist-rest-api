@@ -2,7 +2,7 @@ import { Prisma } from "../generated/prisma/client.js";
 import type { Request, Response, NextFunction, ErrorRequestHandler } from "express";
 
 // 404 Not Found - Handles non-existent routes
-const notFound = (req: Request, res: Response, next: NextFunction) => {
+export const notFound = (req: Request, res: Response, next: NextFunction) => {
     const error = new Error(`Not Found - ${req.originalUrl}`) as Error & { statusCode: number };;
     error.statusCode = 404;
     next(error);

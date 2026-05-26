@@ -1,6 +1,7 @@
 import express from 'express';
 import { Server } from 'http';
 import { connectDB, disconnectDB } from './config/db.js';
+import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import authRoutes from './routes/authRoutes.js';
 import movieRoutes from './routes/movieRoutes.js';
 import watchlistRoutes from './routes/watchlistRoutes.js';
@@ -17,6 +18,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/auth', authRoutes);
 app.use('/movies', movieRoutes);
 app.use('/watchlist', watchlistRoutes);
+
+// Error handling middlewares
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT = 5001;
 
