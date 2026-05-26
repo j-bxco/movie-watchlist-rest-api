@@ -1,8 +1,9 @@
 import express from "express";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 import { validateRequest } from "../middleware/validateRequest.js";
-import { createMovieSchema, paginationSchema, updateMovieSchema } from "../validators/movieValidators.js";
+import { createMovieSchema, updateMovieSchema } from "../validators/movieValidators.js";
 import { addMovie, deleteMovie, getAllMovies, getMovieById, updateMovieDetails } from "../controllers/movieController.js";
+import { paginationSchema } from "../validators/paginationValidator.js";
 
 const router = express.Router();
 

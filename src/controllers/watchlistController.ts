@@ -1,6 +1,62 @@
 import type { Request, Response } from 'express';
 import { prisma } from '../config/db.js'
 
+const getAllMoviesInLoggedInUserWatchlist = async (req: Request, res: Response) => {
+    if (req.user === undefined) {
+        return res.status(401).json({ error: "Not authorized" });
+    }
+
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const skip = (page - 1) * limit;
+
+    const [watchlist, totalItems] = await prisma.$transaction([
+        prisma.watchlistItem.findMany({
+            where: { userId: req.user.id },
+            include: { movie: true }, 
+            skip,
+            take: limit,
+            orderBy: { createdAt: 'desc' }
+        }),
+        prisma.watchlistItem.count({
+            where: { userId: req.user.id }
+        })
+    ]);
+
+    return res.status(200).json({
+        status: "success",
+        data: {
+            watchlist,
+            pagination: {
+                page,
+                limit,
+                totalItems,
+                totalPages: Math.ceil(totalItems / limit)
+            }
+        }
+    });
+};
+
+const getWatchListItem = async (req: Request, res: Response) => {
+    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+
+    if (!id) return res.status(400).json({ error: "Invalid Watchlist Item ID" });
+
+    const watchlistItem = await prisma.watchlistItem.findUnique({
+        where: { id },
+        include: { movie: true }
+    });
+
+    if (!watchlistItem) {
+        return res.status(404).json({ error: "Watchlist item not found" });
+    }
+
+    return res.status(200).json({
+        status: "success",
+        data: { watchlistItem }
+    });
+};
+
 const addToWatchList = async (req: Request, res: Response) => {
     const { movieId, status, rating, notes } = req.body 
 
@@ -119,4 +175,4 @@ const removeFromWatchList = async (req: Request, res: Response) => {
     });
 };
 
-export { addToWatchList, updateWatchListItem, removeFromWatchList };
+export { getAllMoviesInLoggedInUserWatchlist, getWatchListItem, addToWatchList, updateWatchListItem, removeFromWatchList };
