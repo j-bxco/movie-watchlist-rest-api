@@ -12,6 +12,6 @@ export const validateRequest = (schema: any, source: 'body' | 'query' | 'params'
             return res.status(400).json({ message: errorMessages });
         }
 
-        next();
+        return next();
     }
 }
