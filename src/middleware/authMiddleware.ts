@@ -3,7 +3,7 @@ import { prisma } from '../config/db.js';
 import type { Request, Response, NextFunction } from 'express';
 
 // Read token from request and check if token is valid
-export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => { 
+export const authMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => { 
     let token: string | undefined;
 
     if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
@@ -15,7 +15,8 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
     }
 
     if (!token) {
-        return res.status(401).json({ error: "Not authorized, token missing" });
+        res.status(401).json({ error: "Not authorized, token missing" });
+        return;
     }
 
     try { 
@@ -27,15 +28,17 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
         });
 
         if (!user) {
-            return res.status(401).json({ error: "Not authorized, user not found" });
+            res.status(401).json({ error: "Not authorized, user not found" });
+            return;
         }
 
         console.log("Decoded user ID:", decoded.id);
         req.user = user;
 
-        next(); 
+        return next(); 
     } catch (error) { 
         console.error("Token verification failed:", error);
-        return res.status(401).json({ error: "Not authorized, token invalid" });
+        res.status(401).json({ error: "Not authorized, token invalid" });
+        return;
     }
 };
