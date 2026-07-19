@@ -8,10 +8,8 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
 
     if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
         token = req.headers.authorization.split(" ")[1]; // Split Authorization value to 2 elements in arrary ("Bearer", <token>) then get the 2nd element (<token>)
-        console.log("Token found in headers: ", token);
     } else if (req.cookies?.jwt) {
         token = req.cookies.jwt;
-        console.log("Token found in cookies: ", token);
     }
 
     if (!token) {
@@ -32,7 +30,6 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
             return;
         }
 
-        console.log("Decoded user ID:", decoded.id);
         req.user = user;
 
         return next(); 
