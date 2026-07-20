@@ -1,6 +1,10 @@
 .env
-node_modules
-dist
+.env.test
+
+# Folders
+/coverage
+/node_modules
+/dist
 
 # Prisma
 /src/generated/prisma
