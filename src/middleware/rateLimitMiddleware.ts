@@ -21,6 +21,7 @@ export const createRateLimiter = ({
     standardHeaders: true,
     legacyHeaders: false,
     skipSuccessfulRequests,
+    skip: () => process.env.NODE_ENV === 'test',
     handler: (_req, res) => {
       res.status(429).json({ error: message });
     },
