@@ -1,40 +1,49 @@
 # 🎬 Movie Watchlist REST API
+This project is a backend REST API for managing movie watchlists, built with: 
 
-This project is a learning-focused backend implementation of a Movie Watchlist API using **Node.js**, **Express**, and **TypeScript**.
+| Layer | Technology |
+|-------|------------|
+| Language | TypeScript |
+| Runtime | Node.js |
+| Framework | Express |
+| Database | PostgreSQL (Neon) |
+| ORM | Prisma |
+| Authentication | JWT, bcrypt |
+| Validation | Zod |
+| Deployment | Render |
 
 ## 🎯 Purpose
-
-- Practice backend development as a frontend developer moving toward fullstack work.
-- Rebuild a tutorial-based Javascript, Node.js, and Express app in TypeScript for stronger type safety and better developer experience.
-- Learn server setup, routing, database integration, authentication, request validation, and deployment best practices.
+- Practice backend development while transitioning from frontend to fullstack.
+- Rebuild a JavaScript tutorial project entirely in TypeScript.
+- Apply production-oriented backend practices including **authentication, validation, error handling, rate limiting, and deployment**.
 
 ## 💻 Development & Context
-- This project was built while following along with a vanilla JavaScript backend tutorial. To challenge myself and deepen my learning, **I decided to completely rewrite the entire application in TypeScript from scratch**.
-- Translating the JavaScript tutorial code into TypeScript required configuring compiler settings, defining strict data interfaces, managing types for Express request/response objects, and ensuring strict type safety across the database layer.
+This project began as a JavaScript tutorial, but the implementation was **rewritten entirely in TypeScript from scratch.**
 
-## 📦 What’s included
+The rewrite involved:
+- Configuring a TypeScript backend from the ground up
+- Defining strict types throughout the application
+- Extending Express request types
+- Integrating Prisma with TypeScript
+- Applying type-safe validation and error handling
 
-- 🛤️ **Express** server and organized routes
-- 🗄️ **PostgreSQL** connection with **Prisma ORM**
-- 🔐 User registration and login with **JWT** authentication and **bcrypt**
-- ⚙️ Controllers and middleware to separate business logic and validation (**Zod**)
-- 🛡️ **TypeScript** throughout for safer, more maintainable code
-
-## ❓ Why this project?
-
-It is designed to be a practical, end-to-end backend training exercise. Taking a standard JavaScript tutorial and adapting it to TypeScript served as an excellent way to accelerate my fullstack learning, troubleshoot real-world type errors, and establish stronger code quality habits early on.
+## ☁️ Deployment
+- Deployed as a **single Render Web Service**
+- PostgreSQL database hosted on **Neon**
+- Production secrets are managed through **Render environment variables**
+- Repository includes only an `.env.example` template (no secrets are committed)
+- Automatic deployment is triggered on pushes to the `main` branch
+- Deployment health is verified using Render deployment logs
 
 # 🚀 Getting Started
-Follow these steps to set up and run this project locally on your machine.
 ## 📋 Prerequisites
-Before you begin, ensure you have the following installed:
-- Node.js (v18 or higher recommended)
-- PostgreSQL database running locally or hosted online (e.g., Supabase, Neon)
+- Node.js (v18+)
+- PostgreSQL (local or hosted)
 - npm or yarn package manager
 
 ## 🛠️ Installation & Setup
 1. Clone the repository
 2. Install dependencies: `npm install`
-3. Configure environment variables by createing a .env file in the root directory of your project. Refer to the .env-sample as guide.
-4. This project uses Prisma ORM. Run the following command to sync the database schema with your PostgreSQL database: `npx prisma migrate dev --name init`
+3. Create a `.env file` using `.env.example`.
+4. This project uses Prisma ORM. Run the following command to apply database migrations: `npx prisma migrate dev --name init`
 5. Start the development server: `npm run dev`
