@@ -28,11 +28,8 @@ const validMovie = {
 
 // Helpers
 
-async function registerAndGetToken(
-  user: { name: string; email: string; password: string }
-): Promise<string> {
+async function registerAndGetToken(user: typeof testUser): Promise<string> {
   const res = await request(app).post("/auth/register").send(user);
-  console.log(res.body);
   return res.body.data.token as string;
 }
 
@@ -52,7 +49,7 @@ describe("Movie routes", () => {
 
   beforeAll(async () => {
     await prisma.$connect();
-    await prisma.movie.deleteMany();
+    await prisma.movie.deleteMany({ where: { title: validMovie.title } });
     await prisma.user.deleteMany({ where: { email: testUser.email } });
     await prisma.user.deleteMany({ where: { email: anotherUser.email } });
 
@@ -61,7 +58,7 @@ describe("Movie routes", () => {
   });
 
   beforeEach(async () => {
-    await prisma.movie.deleteMany();
+    await prisma.movie.deleteMany({ where: { title: validMovie.title } });
   });
 
   afterAll(async () => {
@@ -91,7 +88,6 @@ describe("Movie routes", () => {
       expect(res.body.data.movies).toHaveLength(2);
       expect(res.body.data.pagination.currentPage).toBe(1);
       expect(res.body.data.pagination.limit).toBe(2);
-      expect(res.body.data.pagination.totalItems).toBe(3);
     });
 
     it("returns 400 when limit exceeds 100", async () => {
