@@ -10,12 +10,29 @@ This project is a backend REST API for managing movie watchlists, built with:
 | ORM | Prisma |
 | Authentication | JWT, bcrypt |
 | Validation | Zod |
+| Testing | Vitest, Supertest |
 | Deployment | Render |
 
 ## 🎯 Purpose
 - Practice backend development while transitioning from frontend to fullstack.
 - Rebuild a JavaScript tutorial project entirely in TypeScript.
 - Apply production-oriented backend practices including **authentication, validation, error handling, rate limiting, and deployment**.
+
+## ✨ Features
+- JWT authentication with bcrypt password hashing
+- CRUD operations for movies and watchlists
+- Request validation with Zod
+- Prisma ORM with PostgreSQL
+- Centralized error handling
+- Rate limiting for authentication and mutation endpoints
+- Unit testing with Vitest
+- Integration testing with Supertest
+- Production deployment on Render with Neon PostgreSQL
+
+## 🧪 Testing
+Automated testing is implemented using:
+- **Vitest** for unit testing of validators and middleware.
+- **Supertest** for integration testing of authentication, movie, and watchlist API endpoints.
 
 ## 💻 Development & Context
 This project began as a JavaScript tutorial, but the implementation was **rewritten entirely in TypeScript from scratch.**

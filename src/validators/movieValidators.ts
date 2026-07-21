@@ -16,7 +16,7 @@ const movieBaseSchema = z.object({
     .int("Runtime must be an integer")
     .positive("Runtime must be a positive number (in minutes)")
     .optional(),
-  posterUrl: z.string().url("Poster URL must be a valid URL").optional(),
+  posterUrl: z.url("Poster URL must be a valid URL").optional(),
 });
 
 const createMovieSchema = movieBaseSchema;
