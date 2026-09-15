@@ -63,4 +63,5 @@ The rewrite involved:
 2. Install dependencies: `npm install`
 3. Create a `.env file` using `.env.example`.
 4. This project uses Prisma ORM. Run the following command to apply database migrations: `npx prisma migrate dev --name init`
-5. Start the development server: `npm run dev`
+5. Generate the Prisma Client: `npx prisma generate`
+6. Start the development server: `npm run dev`
